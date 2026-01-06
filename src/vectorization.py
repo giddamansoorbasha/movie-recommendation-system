@@ -15,6 +15,4 @@ def vectorize():
     vectors = tfidf .fit_transform(tags).toarray()
     with open(os.path.join(BASE_DIR, "artifacts/vectorizer.npy"), 'wb') as f:
         pickle.dump(tfidf , f)
-    return vectors
-
-np.save(os.path.join(BASE_DIR, "artifacts/vectors.npy"), vectorize())
+    np.save(os.path.join(BASE_DIR, "artifacts/vectors.npy"), vectors)
