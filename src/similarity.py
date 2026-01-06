@@ -1,28 +1,15 @@
-import os
-import pickle
+from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from src.vectorization import vectorize
+import pickle
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ARTIFACTS_DIR = os.path.join(BASE_DIR, "artifacts")
-VECTORS_PATH = os.path.join(ARTIFACTS_DIR, "vectors.npy")
-SIM_PATH = os.path.join(ARTIFACTS_DIR, "similarity.pkl")
+vectors = np.load(os.path.join(BASE_DIR, "artifacts/vectors.npy"))
 
 def similarity():
-    if not os.path.exists(VECTORS_PATH):
-        os.makedirs(ARTIFACTS_DIR, exist_ok=True)
-        vectors = vectorize()
-    else:
-        vectors = np.load(VECTORS_PATH)
+    similarity = cosine_similarity(vectors)
+    with open(os.path.join(BASE_DIR, "artifacts/similarity.pkl"), "wb") as f:
+        pickle.dump(similarity, f)
 
-    sim = np.load(SIM_PATH, allow_pickle=True) if os.path.exists(SIM_PATH) else None
-    if sim is None:
-        from sklearn.metrics.pairwise import cosine_similarity
-        sim = cosine_similarity(vectors)
-        with open(SIM_PATH, "wb") as f:
-            pickle.dump(sim, f)
-    return sim
-
-# run only if file executed directly
 if __name__ == "__main__":
     similarity()

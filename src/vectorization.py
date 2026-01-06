@@ -16,3 +16,6 @@ def vectorize():
     with open(os.path.join(BASE_DIR, "artifacts/vectorizer.npy"), 'wb') as f:
         pickle.dump(tfidf , f)
     np.save(os.path.join(BASE_DIR, "artifacts/vectors.npy"), vectors)
+
+if __name__ == "__main__":
+    vectorize()
